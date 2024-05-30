@@ -6,4 +6,7 @@ enum FormsStatus {
   loading,
   unauthenticated,
   authenticated,
+  unVerify,
+  verifyError,
+
 }

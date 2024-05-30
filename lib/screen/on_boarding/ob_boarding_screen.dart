@@ -52,7 +52,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   ).then(
                         (value) {
                       Navigator.pushReplacementNamed(
-                          context, RouteNames.register);
+                          context, RouteNames.firstRoute);
                     },
                   );
                 } else {

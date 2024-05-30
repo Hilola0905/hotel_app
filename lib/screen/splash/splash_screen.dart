@@ -1,7 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hotel_app/utils/style/app_text_style.dart';
 import 'package:lottie/lottie.dart';
 import '../../data/local/storage_repository.dart';
+import '../../utils/colors/app_colors.dart';
 import '../../utils/images/app_images.dart';
 import '../../utils/size/screen_utils.dart';
 import '../route.dart';
@@ -23,11 +27,24 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   _init() async {
     await Future.delayed(
-      const Duration(seconds: 6),
+      const Duration(seconds: 3),
     );
     bool isNewUser = StorageRepository.getBool(key: "is_new_user");
+    bool isLoginUser = StorageRepository.getBool(key: "isLogin");
+    bool isEnter = StorageRepository.getBool(key: "isEnter3");
     if (isNewUser) {
-      Navigator.pushReplacementNamed(context, RouteNames.loginScreen);
+      if(isLoginUser==true){
+        Navigator.pushReplacementNamed(context, RouteNames.tabRoute);
+      }
+      else{
+        if(isEnter==true){
+          Navigator.pushReplacementNamed(context, RouteNames.tabRoute);
+        }
+        else{
+          Navigator.pushReplacementNamed(context, RouteNames.firstRoute);
+
+        }
+      }
     }
     else {
       Navigator.pushReplacementNamed(context, RouteNames.onBoardingRoute);
@@ -42,9 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       body: Center(
-          child: Lottie.asset(
-              AppImages.splashLottie
-          )),
+          child: SvgPicture.asset(AppImages.touristan)),
     );
   }
 }

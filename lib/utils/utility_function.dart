@@ -2,6 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_app/utils/style/app_text_style.dart';
 
+import '../data/model/attraction/attraction_model.dart';
+import '../data/model/hotel/hotel_model.dart';
+import '../data/model/restaurant/restaurant_model.dart';
+
 showSnackBar({required BuildContext context, required String message}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
@@ -98,3 +102,85 @@ showErrorForLogin(
      ],
    );
  }
+
+List<String> getCityHotel(List<HotelModel> list){
+  List<String> city=[];
+  for(int i=0;i<list.length;i++){
+    city.add(list[i].locationModel.city);
+  }
+  Set<String> mySet = city.toSet();
+  city=mySet.toList();
+  return city;
+}
+List<String> getCityAttraction(List<AttractionModel> list){
+  List<String> city=[];
+  for(int i=0;i<list.length;i++){
+    city.add(list[i].locationModel.city);
+  }
+  Set<String> mySet = city.toSet();
+  city=mySet.toList();
+  return city;
+}
+List<String> getCityRestaurant(List<RestaurantModel> list){
+  List<String> city=[];
+  for(int i=0;i<list.length;i++){
+    city.add(list[i].locationModel.city);
+  }
+  Set<String> mySet = city.toSet();
+  city=mySet.toList();
+  return city;
+}
+List<String> getCountryAttraction(List<AttractionModel> list){
+  List<String> country=[];
+  for(int i=0;i<list.length;i++){
+    country.add(list[i].locationModel.country);
+  }
+  Set<String> mySet = country.toSet();
+  country=mySet.toList();
+  return country;
+}
+List<String> getCountryRestaurant(List<RestaurantModel> list){
+  List<String> country=[];
+  for(int i=0;i<list.length;i++){
+    country.add(list[i].locationModel.country);
+  }
+  Set<String> mySet = country.toSet();
+  country=mySet.toList();
+  return country;
+}
+List<String> getCountryHotel(List<HotelModel> list){
+  List<String> country=[];
+  for(int i=0;i<list.length;i++){
+    country.add(list[i].locationModel.country);
+  }
+  Set<String> mySet = country.toSet();
+  country=mySet.toList();
+  return country;
+}
+List<String> getProvinceAttraction(List<AttractionModel> list){
+  List<String> province=[];
+  for(int i=0;i<list.length;i++){
+    province.add(list[i].locationModel.country);
+  }
+  Set<String> mySet = province.toSet();
+  province=mySet.toList();
+  return province;
+}
+List<String> getProvinceRestaurant(List<RestaurantModel> list){
+  List<String> province=[];
+  for(int i=0;i<list.length;i++){
+    province.add(list[i].locationModel.country);
+  }
+  Set<String> mySet = province.toSet();
+  province=mySet.toList();
+  return province;
+}
+List<String> getProvinceHotel(List<HotelModel> list){
+  List<String> province=[];
+  for(int i=0;i<list.length;i++){
+    province.add(list[i].locationModel.country);
+  }
+   Set<String> mySet = province.toSet();
+   province=mySet.toList();
+  return province;
+}

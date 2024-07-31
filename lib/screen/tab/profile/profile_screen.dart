@@ -1,3 +1,5 @@
+
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_app/data/local/storage_repository.dart';
@@ -5,7 +7,7 @@ import 'package:hotel_app/data/model/response/form_status.dart';
 import 'package:hotel_app/screen/route.dart';
 import 'package:hotel_app/utils/size/screen_utils.dart';
 import 'package:hotel_app/utils/style/app_text_style.dart';
-
+import 'package:image_picker/image_picker.dart';
 import '../../../bloc/profile/profile_bloc.dart';
 import '../../../bloc/profile/profile_event.dart';
 import '../../../bloc/profile/profile_state.dart';
@@ -19,25 +21,37 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool isLogin=StorageRepository.getBool(key: "isLogin");
-
+  File? _imageFile;
   @override
   void initState() {
     Future.microtask(() =>  context.read<ProfileBloc>().add(GetUserProfileEvent()));
-
-    // TODO: implement initState
     super.initState();
   }
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+        source: source, maxHeight: 1024.h, maxWidth: 1024.w);
 
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+  Future<void> _uploadImage() async {
+    if (_imageFile == null) return;
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<ProfileBloc, ProfileState>(
         builder: (BuildContext context, ProfileState state) {
-          print(state);
           if (state.formsStatus == FormsStatus.loading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (
+          }
+          else if (
           state.formsStatus == FormsStatus.authenticated || state.formsStatus == FormsStatus.success
           ) {
             return Padding(
@@ -47,38 +61,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      IconButton(onPressed: () {
+                      Stack(
+                        children: [
+                          Container(
+                            width: 150,
+                            height: 150,
+                            decoration:  BoxDecoration(
+                              color: Colors.cyan.withOpacity(0.4),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          Positioned(
+                              bottom: 10.h,
+                              right: 30.w,
+                              child: Container(
+                                  decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle
+                                  ),
 
-                      },
-                          icon: const Icon(Icons.shopping_basket)),
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      Container(
-                        width: 150,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          color: Colors.cyan.withOpacity(0.3),
-                          shape: BoxShape.circle,
+                                  width: 30.w,
+                                  height: 30.w,
+                                  child: Center(child: IconButton(onPressed: () {
+
+                                  },
+                                    icon: const Icon(Icons.edit),
+                                    padding: EdgeInsets.zero,))))
+                        ],
+                      ),
+                      InkWell(
+                        onTap: () {
+                          StorageRepository.setBool(
+                              key: "isLogin", value: false);
+                          StorageRepository.setString(
+                              key: "access_token", value: "");
+                          StorageRepository.setString(
+                              key: "refresh_token", value: "");
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, RouteNames.firstRoute, (route) => false);
+                        },
+                        borderRadius: BorderRadius.circular(10.w),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10.h, horizontal: 10.w),
+                          decoration: BoxDecoration(
+                            color: Colors.cyan.withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(10.w),
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(Icons.logout,),
+                            ],
+                          ),
                         ),
                       ),
-                      Positioned(
-                          bottom: 10.h,
-                          right: 30.w,
-                          child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle
-                              ),
-
-                              width: 30.w,
-                              height: 30.w,
-                              child: Center(child: IconButton(onPressed: () {},
-                                icon: const Icon(Icons.edit),
-                                padding: EdgeInsets.zero,))))
                     ],
                   ),
                   SizedBox(height: 50.h,),
@@ -130,6 +169,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),)
                           ],
                         ),
+                        SizedBox(height: 10.h,),
+                        Row(
+                          children: [
+                            Text("Card : ",
+                              style: AppTextStyle.interMedium.copyWith(
+                                  color: Colors.black54
+                              ),),
+                            Text(state.user!.card,
+                              style: AppTextStyle.interMedium.copyWith(
+                                  color: Colors.black
+                              ),)
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -139,14 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       InkWell(
                         onTap: () {
-                          StorageRepository.setBool(
-                              key: "isLogin", value: false);
-                          StorageRepository.setString(
-                              key: "access_token", value: "");
-                          StorageRepository.setString(
-                              key: "refresh_token", value: "");
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, RouteNames.firstRoute, (route) => false);
+                          Navigator.pushNamed(context, RouteNames.allBookingRoute);
                         },
                         borderRadius: BorderRadius.circular(10.w),
                         child: Container(
@@ -158,9 +203,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.logout),
+                              const Icon(Icons.shopping_basket),
                               SizedBox(width: 10.w,),
-                              Text("log out",
+                              Text("booking",
                                 style: AppTextStyle.interMedium.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: Colors.black,
@@ -173,7 +218,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       InkWell(
                         borderRadius: BorderRadius.circular(10.w),
                         onTap: () {
-                          print(StorageRepository.getString(key: "access_token"));
                           Navigator.pushNamed(
                               context, RouteNames.editProfileRoute);
                         },
@@ -281,3 +325,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
+
+
+
+
+
+
+
+

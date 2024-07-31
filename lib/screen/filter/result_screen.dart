@@ -143,7 +143,7 @@ class _ResultScreenState extends State<ResultScreen> {
                                   },);
                                 }
                                 if(activeIndex==1){
-                                  if(state.restaurants.length==0){
+                                  if(state.restaurants.isEmpty){
                                     return Center(
                                       child: Text("Data topilmadi",style: AppTextStyle.interBold,),
                                     );
@@ -180,7 +180,7 @@ class _ResultScreenState extends State<ResultScreen> {
                                     }
                                   });
                                 }
-                                return SizedBox();
+                                return const SizedBox();
                               }
                           ),
                         ],

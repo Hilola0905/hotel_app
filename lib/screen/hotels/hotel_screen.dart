@@ -7,7 +7,7 @@ import 'package:hotel_app/utils/style/app_text_style.dart';
 import '../../bloc/all_data/all_data_bloc.dart';
 import '../../bloc/all_data/all_data_event.dart';
 import '../../bloc/all_data/all_data_state.dart';
-import '../../data/model/hotel/hotel_model.dart';
+
 
 class HotelScreen extends StatefulWidget {
   const HotelScreen({super.key});
@@ -20,41 +20,41 @@ class _HotelScreenState extends State<HotelScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
-        backgroundColor: Colors.cyan.withOpacity(0.2),
+        backgroundColor: Colors.teal,
         systemOverlayStyle:  const SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.dark,
             statusBarBrightness: Brightness.light
         ),
         title: Center(child: Text("All Hotels",style: AppTextStyle.interMedium.copyWith(
-          fontSize: 18.sp,
-          color: Colors.black,
+          fontSize: 16.sp,
+          color: Colors.white,
           fontWeight: FontWeight.w600
         ),)),
         leading: IconButton(onPressed: (){
           Navigator.pop(context);
-        },icon: Icon(Icons.arrow_back,color: Colors.black,),),
+        },icon: const Icon(Icons.arrow_back_ios,color: Colors.white,),
+        padding: EdgeInsets.zero,
+        ),
       ),
         body: BlocConsumer<AllDataBloc, AllDataState>(
-    builder: (BuildContext context, AllDataState state) {
-      return RefreshIndicator(
-        onRefresh: () async {
-          context.read<AllDataBloc>().add(AllDataByApiEvent());
-        },
+          builder: (BuildContext context, AllDataState state) {
+          return RefreshIndicator(
+          onRefresh: () async {
+             context.read<AllDataBloc>().add(AllDataByApiEvent());
+           },
         child: Padding(
-          padding:  EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
+          padding:  EdgeInsets.symmetric(vertical: 20.h,horizontal: 10.w),
           child:
           GridView.count(
             crossAxisCount: 2,
-            mainAxisSpacing: 10,
+            mainAxisSpacing: 20,
             crossAxisSpacing: 10,
             children: [
               ...List.generate(
-                  state.hotels.length,
+                  state.hotels.length-2,
                       (index) => HotelItem(hotelModel: state.hotels[index], funk: () {
-                        List<HotelModel> hotels=state.hotels;
                         if(state.hotels[index].isFavourite==true){
                           state.hotels[index]= state.hotels[index].copyWith(isFavourite: false);
                           setState(() {

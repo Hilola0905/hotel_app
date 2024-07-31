@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,8 +56,8 @@ class _BookingScreenState extends State<BookingScreen> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          "start_date",
+                        const Text(
+                          "start",
                         ),
                         SizedBox(width: 10.h),
                         DatePickerItem(
@@ -68,14 +65,14 @@ class _BookingScreenState extends State<BookingScreen> {
                             startedDate = value;
                             setState(() {});
                           },
-                          dateType: 'start_date',
+                          dateType: 'start date',
                         ),
                       ],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("finis date",),
+                        const Text("finish",),
                         SizedBox(width: 10.h),
                         DatePickerItem(
                             onSelectionDate: (value) {

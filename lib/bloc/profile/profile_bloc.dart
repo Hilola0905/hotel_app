@@ -22,11 +22,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<UpdateUserProfileEvent>(_update);
     on<CreateUserProfileEvent>(_create);
     on<GetUserProfileEvent>(_getUser);
-
+    on<UpdateImageProfileEvent>(_updateImage);
   }
 
-  _create(CreateUserProfileEvent event,  emit ){
-
+  _create(CreateUserProfileEvent event,  emit ){}
+  _updateImage(UpdateImageProfileEvent event,  emit ){
   }
   _getUser(GetUserProfileEvent event,  emit )async {
     emit(state.copyWidth(FormsStatus.loading,"","",null));

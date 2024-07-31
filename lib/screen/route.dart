@@ -16,7 +16,6 @@ import 'package:hotel_app/screen/restaurant/restaurant_detail_screen.dart';
 import 'package:hotel_app/screen/restaurant/restaurant_screen.dart';
 import 'package:hotel_app/screen/splash/splash_screen.dart';
 import 'package:hotel_app/screen/tab/profile/edit_profile_screen.dart';
-
 import 'package:hotel_app/screen/tab/tab_screen.dart';
 import '../data/model/filter/filter.dart';
 import 'atraksion/atraksion_detail_screen.dart';
@@ -62,11 +61,12 @@ class AppRoutes {
         case RouteNames.resultRoute:
         return navigate( ResultScreen(filter: settings.arguments as FilterItemModel1));
         case RouteNames.editProfileRoute:
-        return navigate(  EditProfileScreen());
+        return navigate(  const EditProfileScreen());
         case RouteNames.bookingRoute:
         return navigate( BookingScreen(funk: settings.arguments as String,));
         case RouteNames.allBookingRoute:
         return navigate( const AllBookingScreen());
+
       default:
         return navigate(
           const Scaffold(
@@ -103,6 +103,7 @@ class RouteNames {
   static const String firstRoute = "/first_route";
   static const String filterRoute = "/filter_route";
   static const String bookingRoute = "/booking_route";
-  static const String allBookingRoute = "/booking_route";
+  static const String taskRoute = "/task_route";
+  static const String allBookingRoute = "/all_booking_route";
   static const String editProfileRoute = "/edit_profile_route";
 }

@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:hotel_app/data/local/storage_repository.dart';
 import 'package:hotel_app/utils/contacts/app_contacts.dart';
 import 'package:http/http.dart' as http;
 import '../model/response/network_response.dart';
-
+import 'dart:convert';
+import 'package:hotel_app/utils/contacts/app_contacts.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+import 'package:http_parser/http_parser.dart';
 
 
 class ApiProvider {
@@ -23,7 +28,7 @@ class ApiProvider {
         };
         Uri uri=Uri.http(AppConstants.baseUrl,"/v1/users/login",).replace(queryParameters: queryParams);
         debugPrint(uri.toString());
-       http.Response response= await http.get(uri);
+       http.Response response= await http.post(uri);
 
        if(response.statusCode==200){
          StorageRepository.setString(key: "access_token", value: jsonDecode(response.body)["access_token"]);
@@ -53,7 +58,7 @@ class ApiProvider {
     try{
       final Map<String, String> queryParams = {
         'card': card ?? "",
-        'date_of_birth': dateOfBirth ?? "",
+        'date_of_birth':"2006-01-02",
         'password': "",
         'email': email ?? "",
         'full_name': fullName ?? "",
@@ -550,5 +555,111 @@ class ApiProvider {
       return NetworkResponse(errorText: e.toString());
     }
   }
+  static Future<NetworkResponse> getBookingAllHotel() async {
+    try{
+      final Map<String, String> queryParams = {
+        "id":"",
+        'page': "1",
+        'limit': "100",
+      };
+      Uri uri=Uri.http(AppConstants.baseUrl,"/v1/hotel/list",).replace(queryParameters: queryParams);
+      http.Response response= await http.get(uri);
+      if(response.statusCode==200){
+        return NetworkResponse(
+          data: jsonDecode(response.body)["hotels"],
+        );
+      }
+      if(response.statusCode==400){
+        return NetworkResponse(errorCode: 400.toString());
+      }
+      return NetworkResponse(errorCode: response.statusCode.toString());
+    }catch(e){
+      return NetworkResponse(errorText: e.toString());
+    }
+  }
+  static Future<NetworkResponse> getBookingAllAttraction() async {
+    try{
+      final Map<String, String> queryParams = {
+        'page': "1",
+        'limit': "100",
+      };
+      Uri uri=Uri.http(AppConstants.baseUrl,"/v1/attraction/list",).replace(queryParameters: queryParams);
+      http.Response response= await http.get(uri);
+      if(response.statusCode==200){
+        return NetworkResponse(
+          data: jsonDecode(response.body)["attractions"],
+        );
+      }
+      if(response.statusCode==400){
+        return NetworkResponse(errorCode: 400.toString());
+      }
+      return NetworkResponse(errorCode: response.statusCode.toString());
+    }catch(e){
+      return NetworkResponse(errorText: e.toString());
+    }
+  }
+  static Future<NetworkResponse> getBookingAllRestaurant() async {
+    try{
+      final Map<String, String> queryParams = {
+        'page': "1",
+        'limit': "100",
+      };
+      Uri uri=Uri.http(AppConstants.baseUrl,"/v1/restaurant/list",).replace(queryParameters: queryParams);
+      http.Response response= await http.get(uri);
+      if(response.statusCode==200){
+        return NetworkResponse(
+          data: jsonDecode(response.body)["restaurants"],
+        );
+      }
+      if(response.statusCode==400){
+        return NetworkResponse(errorCode: 400.toString());
+      }
+      return NetworkResponse(errorCode: response.statusCode.toString());
+    }catch(e){
+      return NetworkResponse(errorText: e.toString());
+    }
+  }
+  static Future<NetworkResponse> downloadImage({
+    required File image,
+  }) async {
+    try{
 
+
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse("${AppConstants.baseUrl}/v1/media/user-photo",),
+      );
+
+      request.files.add(
+        http.MultipartFile(
+          'file',
+          image.readAsBytes().asStream(),
+          image.lengthSync(),
+          filename: path.basename(image.path),
+          contentType: MediaType('image', 'png'),
+        ),
+      );
+
+      final response = await request.send();
+
+      if (response.statusCode == 201) {
+        response.stream.transform(utf8.decoder).listen((value) async {
+          final Map<String, dynamic> responseData = json.decode(value);
+        });
+      } else {
+        debugPrint('Image upload failed with status: ${response.statusCode}');
+      }
+      if(response.statusCode==200){
+        return NetworkResponse(
+          data: "success",
+        );
+      }
+      if(response.statusCode==400){
+        return NetworkResponse(errorText: "Not Fount");
+      }
+      return NetworkResponse(errorText: "Handler Error");
+    }catch(e){
+      return NetworkResponse(errorText: e.toString());
+    }
+  }
 }

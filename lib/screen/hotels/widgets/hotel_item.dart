@@ -21,12 +21,18 @@ class HotelItem extends StatelessWidget {
         height: 105,
         margin: EdgeInsets.symmetric(horizontal: 10.w),
         decoration: BoxDecoration(
-          color: Colors.cyan.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(10),
-
+          color: Colors.teal,
+          borderRadius: BorderRadius.circular(10.w),
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.grey,
+                  spreadRadius: 4,
+                  blurRadius: 8
+              )
+            ]
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
            Stack(
@@ -45,15 +51,15 @@ class HotelItem extends StatelessWidget {
               ],
             ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:  EdgeInsets.only(right: 4.w,top: 4.h),
+                  padding:  EdgeInsets.only(left: 6.w,top: 4.h),
                   child: Text(
                     hotelModel.hotelName,
                     style: AppTextStyle.interLight.copyWith(
                         fontSize: 14,
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.w700
                     ),
                     maxLines: 1,
@@ -62,15 +68,17 @@ class HotelItem extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(onPressed: (){
-                      Navigator.pushNamed(context, RouteNames.mapRoute,arguments: LatLng(hotelModel.locationModel.latitude, hotelModel.locationModel.longitude));
+                      Navigator.pushNamed(context, RouteNames.mapRoute,
+                          arguments: LatLng(hotelModel.locationModel.latitude, hotelModel.locationModel.longitude));
                     }, icon: const Icon(Icons.location_pin,color: Colors.orange,),
                       padding: EdgeInsets.zero,
                     ),
                     Text(
                       hotelModel.locationModel.city,
                       style: AppTextStyle.interLight.copyWith(
-                          fontSize: 10,
-                          color: Colors.black
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],

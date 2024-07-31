@@ -18,180 +18,158 @@ class AttractionDetailScreen extends StatefulWidget {
 }
 int activeIndex=0;
 class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
+  final PageController controller = PageController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark,
-            statusBarBrightness: Brightness.light
-        ),
-        title: Center(
-          child: Text(widget.attractionModel.attractionName,style: AppTextStyle.interBold.copyWith(
-              fontSize: 20.w
-          ),),
-        ),
-        leading: IconButton(onPressed: (){
-          Navigator.pop(context);
-        },icon: const Icon(Icons.arrow_back,color: Colors.black,),),
+    return AnnotatedRegion(
+      value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 660.h,
-            child: ListView(
-              children: [
-                Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 300,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network(widget.attractionModel.images[activeIndex],fit: BoxFit.cover,),
-
+      child: Scaffold(
+        body: Column(
+          children: [
+            SizedBox(
+              height: 720.h,
+              width: double.infinity,
+              child: ListView(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 350,
+                    child: PageView(
+                      controller: controller,
+                      onPageChanged: (index) {},
+                      children:  [
+                        ...List.generate(widget.attractionModel.images.length, (index) =>
+                            SizedBox(
+                              height: 350,
+                              width: double.infinity,
+                              child: ClipRRect(
+                                child: Image.network(widget.attractionModel.images[index],fit: BoxFit.cover,),
+                              ),
+                            ),
                         ),
-                      ),
-                      Positioned(
-                          bottom: 5,
-                          right: 5,
-                          child: Row(
-                            children: [
-                              IconButton(onPressed: (){
-                                if(activeIndex>0){
-                                  activeIndex--;
-                                  setState(() {
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20.h,),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.attractionModel.attractionName,
+                          style: AppTextStyle.interMedium.copyWith(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500
+                          ),
+                          maxLines: 1,
+                        ),
+                        TextButton(onPressed: (){
+                          Uri uri = Uri.parse(widget.attractionModel.websiteUrl);
+                          launchUrl(uri);
+                        },
+                            child:const Icon(Icons.language)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 4.h,),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ...List.generate(5, (index) {
+                              int a=getDouble(widget.attractionModel.rating);
+                              return  Image.asset(AppImages.img3,width: 18,height: 18,
+                                color: a>=widget.attractionModel.rating ? Colors.red : Colors.grey,
+                              );
+                            }),
+                            SizedBox(width: 4.w,),
+                            Text(widget.attractionModel.rating.toString(),style: AppTextStyle.interBold,)
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 4.h,),
+                  Row(
+                    children: [
 
-                                  });
-                                }
-                              }, icon: Container(
-                                  height: 35,
-                                  width: 35,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(Icons.arrow_back))),
+                      IconButton(onPressed: (){
+                        Uri uri = Uri.parse("tel:${widget.attractionModel.contactNumber.replaceAll("(", "").replaceAll(")", "")}");
+                        launchUrl(uri);
+                      }, icon: const Icon(Icons.phone),padding: EdgeInsets.zero,),
+                      SizedBox(width: 5.w,),
+                      Text(widget.attractionModel.contactNumber,style: AppTextStyle.interMedium.copyWith(
 
-                              IconButton(onPressed: (){
-                                if(activeIndex<widget.attractionModel.images.length-1){
-                                  activeIndex++;
-                                  setState(() {
-
-                                  });
-                                }
-                              }, icon: Container(
-                                  width: 35,
-                                  height: 35,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(Icons.arrow_forward_rounded))),
-                            ],
-                          )
-                      ),
+                      ),)
                     ],
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: Row(
+                  Row(
                     children: [
                       IconButton(onPressed: (){
                         Navigator.pushNamed(context, RouteNames.mapRoute,arguments: LatLng(widget.attractionModel.locationModel.latitude, widget.attractionModel.locationModel.longitude));
-                      }, icon: const Icon(Icons.location_on_sharp)),
+
+                      },
+                          padding: EdgeInsets.zero,
+                          icon: const Icon(Icons.location_on_sharp)),
                       Text("${widget.attractionModel.locationModel.stateProvince} , ${widget.attractionModel.locationModel.city} , ${widget.attractionModel.locationModel.country}",
                         maxLines: 3,
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(onPressed: (){
-                        Uri uri = Uri.parse(widget.attractionModel.websiteUrl);
-                        launchUrl(uri);
-                      },
-                          child:const Icon(Icons.language)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ...List.generate(5, (index) {
-                            int a=getDouble(widget.attractionModel.rating);
-                            return  Image.asset(AppImages.img3,width: 18,height: 18,
-                              color: a>=widget.attractionModel.rating ? Colors.red : Colors.grey,
-                            );
-                          }),
-                          SizedBox(width: 4.w,),
-                          Text(widget.attractionModel.rating.toString(),style: AppTextStyle.interBold,)
-                        ],
                       ),
+
                     ],
                   ),
-                ),
-                SizedBox(height: 4.h,),
-                Row(
-                  children: [
-                    SizedBox(width: 20.h,),
-                    IconButton(onPressed: (){
-                      Uri uri = Uri.parse("tel:${widget.attractionModel.contactNumber.replaceAll("(", "").replaceAll(")", "")}");
-                      launchUrl(uri);
-                    }, icon: const Icon(Icons.phone),padding: EdgeInsets.zero,),
-                    SizedBox(width: 5.w,),
-                    Text(widget.attractionModel.contactNumber,style: AppTextStyle.interMedium.copyWith(
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    child: RichText(
+                      text: TextSpan(
+                          text: "Description : \n\n",
+                          style: AppTextStyle.interMedium.copyWith(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500
+                          ),
+                          children: [
+                            TextSpan(
+                              text: widget.attractionModel.description,
+                              style: AppTextStyle.interMedium.copyWith(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.teal
+                              ),
 
-                    ),)
-                  ],
-                ),
-                SizedBox(height: 4.h,),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: RichText(
-                    text: TextSpan(
-                        text: "Description : \n\n",
-                        style: AppTextStyle.interMedium.copyWith(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500
-                        ),
-                        children: [
-                          TextSpan(
-                            text: widget.attractionModel.description,
-                            style: AppTextStyle.interMedium.copyWith(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.teal
-                            ),
-
-                          )
-                        ]
+                            )
+                          ]
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Center(
-            child: SizedBox(
-              width: 300,
-              height: 46.h,
-              child: RoundedButton(
-                  text: "booking",
-                  onTap: () {
-                    Navigator.pushNamed(context, RouteNames.bookingRoute,arguments: widget.attractionModel.attractionId);
-                  }
+                  SizedBox(height: 4.h,),
+                ],
               ),
             ),
-          ),
-        ],
+            const Spacer(),
+            Center(
+              child: SizedBox(
+                width: 300,
+                height: 46.h,
+                child: RoundedButton(
+                    text: "booking",
+                    onTap: () {
+                      Navigator.pushNamed(context, RouteNames.bookingRoute,arguments: widget.attractionModel.attractionId);
+                    }
+                ),
+              ),
+            ),
+            SizedBox(height: 20.h,),
+          ],
+        ),
       ),
     );
   }

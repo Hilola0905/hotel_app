@@ -6,7 +6,6 @@ import 'package:hotel_app/bloc/all_data/all_data_bloc.dart';
 import 'package:hotel_app/bloc/all_data/all_data_event.dart';
 import 'package:hotel_app/bloc/auth/auth_bloc.dart';
 import 'package:hotel_app/bloc/bottom/bottom_bloc.dart';
-import 'package:hotel_app/bloc/profile/profile_event.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../screen/route.dart';
 

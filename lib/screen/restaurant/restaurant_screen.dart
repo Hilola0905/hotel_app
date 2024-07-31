@@ -21,20 +21,21 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.teal,
         systemOverlayStyle:  const SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.light,
             statusBarBrightness: Brightness.light
         ),
         title: Center(child: Text("All Restaurant",style: AppTextStyle.interMedium.copyWith(
-            fontSize: 18.sp,
-            color: Colors.black,
+            fontSize: 16.sp,
+            color: Colors.white,
             fontWeight: FontWeight.w600
         ),)),
           leading: IconButton(onPressed: (){
             Navigator.pop(context);
-          },icon: Icon(Icons.arrow_back,color: Colors.black,),),
+          },
+            icon: const Icon(Icons.arrow_back_ios,color: Colors.white,),),
 
         ),
         body: BlocConsumer<AllDataBloc, AllDataState>(
@@ -44,26 +45,29 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 context.read<AllDataBloc>().add(AllDataByApiEvent());
               },
               child: Padding(
-                padding:  EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
+                padding:  EdgeInsets.symmetric(vertical: 20.h,horizontal: 10.w),
                 child:
                 GridView.count(
                   crossAxisCount: 2,
-                  mainAxisSpacing: 10,
+                  mainAxisSpacing: 20,
                   crossAxisSpacing: 10,
                   children: [
                     ...List.generate(
                         state.restaurants.length,
-                            (index) => RestaurantItem(restaurantModel: state.restaurants[index],funk: () {
-                              if(state.restaurants[index].isFavourite==true){
-                                state.restaurants[index]= state.restaurants[index].copyWith(isFavourite: false);
-                                setState(() {});
-                                context.read<AllDataBloc>().add(DeleteDataEvent(state.hotels[index].hotelId));
-                              }else{
-                                state.restaurants[index]= state.restaurants[index].copyWith(isFavourite: true);
-                                setState(() {});
-                                context.read<AllDataBloc>().add(AddDataEvent(dataId: state.hotels[index].hotelId, name: 'restaurant'));
-                              }
-                            },)),
+                            (index) => RestaurantItem(restaurantModel: state.restaurants[index],
+                              funk: () {
+                                if(state.restaurants[index].isFavourite==true){
+                                  state.restaurants[index]= state.restaurants[index].copyWith(isFavourite: false);
+                                  setState(() {});
+                                  context.read<AllDataBloc>().add(DeleteDataEvent(state.restaurants[index].restaurantId));
+                                }
+                                else{
+                                  state.restaurants[index]= state.restaurants[index].copyWith(isFavourite: true);
+                                  setState(() {});
+                                  context.read<AllDataBloc>().add(AddDataEvent(dataId: state.restaurants[index].restaurantId, name: 'restaurant'));
+                                }
+                              },
+                            )),
                   ],
                 ),
               ),

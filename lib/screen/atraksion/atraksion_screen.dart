@@ -21,20 +21,23 @@ class _AttractionScreenState extends State<AttractionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.cyan.withOpacity(0.2),
+        backgroundColor: Colors.teal,
         systemOverlayStyle:  const SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.dark,
             statusBarBrightness: Brightness.light
         ),
         title: Center(child: Text("All Attraction",style: AppTextStyle.interMedium.copyWith(
-            fontSize: 18.sp,
-            color: Colors.black,
+            fontSize: 16.sp,
+            color: Colors.white,
             fontWeight: FontWeight.w600
         ),)),
-        leading: IconButton(onPressed: (){
-          Navigator.pop(context);
-        },icon: Icon(Icons.arrow_back,color: Colors.black,),),
+        leading: IconButton(
+          onPressed: () {
+             Navigator.pop(context);
+               },
+          icon:
+          const Icon(Icons.arrow_back_ios,color: Colors.white,),),
       ),
       body: BlocConsumer<AllDataBloc, AllDataState>(
         builder: (BuildContext context, AllDataState state) {
@@ -43,11 +46,11 @@ class _AttractionScreenState extends State<AttractionScreen> {
               context.read<AllDataBloc>().add(AllDataByApiEvent());
             },
             child: Padding(
-              padding:  EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
+              padding:  EdgeInsets.symmetric(vertical: 20.h,horizontal: 10.w),
               child:
               GridView.count(
                 crossAxisCount: 2,
-                mainAxisSpacing: 10,
+                mainAxisSpacing: 20,
                 crossAxisSpacing: 10,
                 children: [
                   ...List.generate(
@@ -59,7 +62,6 @@ class _AttractionScreenState extends State<AttractionScreen> {
                               });
                               context.read<AllDataBloc>().add(DeleteDataEvent(state.attractions[index].attractionId));
                             }else{
-                              print(state.attractions[index].isFavourite);
                               state.attractions[index]= state.attractions[index].copyWith(isFavourite: true);
                               setState(() {});
                               context.read<AllDataBloc>().add(AddDataEvent(dataId: state.attractions[index].attractionId, name: 'attraction'));

@@ -20,12 +20,18 @@ class AttractionItem extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.w),
         decoration: BoxDecoration(
-          color: Colors.cyan.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(10),
-
+          color: Colors.teal,
+          borderRadius: BorderRadius.circular(10.w),
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.grey,
+                  spreadRadius: 4,
+                  blurRadius: 8
+              )
+            ]
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
@@ -44,15 +50,15 @@ class AttractionItem extends StatelessWidget {
               ],
             ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:  EdgeInsets.only(right: 4.w,top: 4.h),
+                  padding:  EdgeInsets.only(left: 4.w,top: 4.h),
                   child: Text(
                     attractionModel.attractionName,
                     style: AppTextStyle.interLight.copyWith(
                         fontSize: 14,
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.w700
                     ),
                   ),
@@ -67,8 +73,9 @@ class AttractionItem extends StatelessWidget {
                     Text(
                       attractionModel.locationModel.city,
                       style: AppTextStyle.interLight.copyWith(
-                          fontSize: 10,
-                          color: Colors.black
+                        fontSize: 12,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],

@@ -12,9 +12,7 @@ class _AllBookingScreenState extends State<AllBookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-        children: [
-
-        ],
+        children: const [],
       ),
     );
   }

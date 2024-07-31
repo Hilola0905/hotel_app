@@ -16,16 +16,18 @@ class FavouriteIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10.h),
-      padding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
+      margin: EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
+
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.w),
-       boxShadow: const [
-         BoxShadow(
-           color: Colors.grey,
-           blurRadius: 4
-         )
+        color: Colors.teal,
+        borderRadius: BorderRadius.circular(15.w),
+          boxShadow: const [
+            BoxShadow(
+                color: Colors.grey,
+                spreadRadius: 4,
+                blurRadius: 8
+            )
+
        ]
       ),
         child: Row(
@@ -36,7 +38,7 @@ class FavouriteIcon extends StatelessWidget {
                   height: 100,
                   width: 120,
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15.w),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15.w),bottomLeft: Radius.circular(15.w)),
                       child: Image.network(imageUrl,fit: BoxFit.cover,)),
                 ),
                 Positioned(child: Container(
@@ -53,10 +55,10 @@ class FavouriteIcon extends StatelessWidget {
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
           Text(
-          title.length>10 ? title.substring(0,10) : title,
+          title.length>11 ? title.substring(0,11) : title,
             style: AppTextStyle.interLight.copyWith(
                 fontSize: 16.sp,
-                color: Colors.black,
+                color: Colors.white,
                 fontWeight: FontWeight.w700
             ),
           ),
@@ -74,7 +76,7 @@ class FavouriteIcon extends StatelessWidget {
                         rate.toString(),
                         style: AppTextStyle.interLight.copyWith(
                             fontSize: 14,
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.w500
                         ),
                       ),
